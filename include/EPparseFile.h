@@ -71,7 +71,7 @@ struct EP_IMAGE_SECTION_HEADER {
 void parseDosHeader(std::ifstream& file) {
     EP_IMAGE_DOS_HEADER dosHeader;
     file.seekg(0, std::ios::beg);
-    file.read(reinterpret_cast<char*>(&dosHeader), sizeof(IMAGE_DOS_HEADER));
+    file.read(reinterpret_cast<char*>(&dosHeader), sizeof(EP_IMAGE_DOS_HEADER));
 
     if (dosHeader.e_magic == EP_IMAGE_DOS_SIGNATURE) {
         std::cout << "DOS Header:" << std::endl;
@@ -180,5 +180,24 @@ void parseSectionHeaders(std::ifstream& file) {
         std::cerr << "Invalid DOS signature." << std::endl;
     }
 }
+
+int parsePEHeaders(const std::string& filePath) {
+    std::ifstream file(filePath, std::ios::binary);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file." << std::endl;
+        return 1;
+    }
+
+    
+    parseDosHeader(file);
+    parseNtHeader(file);
+    parseFileHeader(file);
+    parseOptionalHeader(file);
+    parseSectionHeaders(file);
+
+    return 0;
+}
+
+
 
 #endif // EP_PARSE_FILE_H
