@@ -68,5 +68,17 @@ struct EP_IMAGE_SECTION_HEADER {
 
 #pragma pack(pop)
 
+void parseDosHeader(std::ifstream& file) {
+    EP_IMAGE_DOS_HEADER dosHeader;
+    file.seekg(0, std::ios::beg);
+    file.read(reinterpret_cast<char*>(&dosHeader), sizeof(IMAGE_DOS_HEADER));
+
+    if (dosHeader.e_magic == EP_IMAGE_DOS_SIGNATURE) {
+        std::cout << "DOS Header:" << std::endl;
+        std::cout << "e_lfanew (Offset to PE signature): " << dosHeader.e_lfanew << std::endl;
+    } else {
+        std::cerr << "Invalid DOS signature." << std::endl;
+    }
+}
 
 #endif // EP_PARSE_FILE_H
