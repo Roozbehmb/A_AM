@@ -125,4 +125,28 @@ void parseFileHeader(std::ifstream& file) {
     }
 }
 
+
+void parseOptionalHeader(std::ifstream& file) {
+    file.seekg(0, std::ios::beg);
+    EP_IMAGE_DOS_HEADER dosHeader;
+    file.read(reinterpret_cast<char*>(&dosHeader), sizeof(EP_IMAGE_DOS_HEADER));
+
+    if (dosHeader.e_magic == EP_IMAGE_DOS_SIGNATURE) {
+        file.seekg(dosHeader.e_lfanew + sizeof(uint32_t), std::ios::beg); // Move to IMAGE_NT_HEADERS
+        EP_IMAGE_FILE_HEADER fileHeader;
+        file.read(reinterpret_cast<char*>(&fileHeader), sizeof(EP_IMAGE_FILE_HEADER));
+
+        file.seekg(dosHeader.e_lfanew + sizeof(uint32_t) + sizeof(EP_IMAGE_FILE_HEADER), std::ios::beg); // Move to Optional Header
+        EP_IMAGE_OPTIONAL_HEADER optionalHeader;
+        file.read(reinterpret_cast<char*>(&optionalHeader), sizeof(EP_IMAGE_OPTIONAL_HEADER));
+
+        std::cout << "\nOptional Header:" << std::endl;
+        std::cout << "Magic: " << std::hex << optionalHeader.Magic << std::dec << std::endl;
+        // Other optional header fields can be added here as needed
+    } else {
+        std::cerr << "Invalid DOS signature." << std::endl;
+    }
+}
+
+
 #endif // EP_PARSE_FILE_H
