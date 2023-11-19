@@ -148,5 +148,37 @@ void parseOptionalHeader(std::ifstream& file) {
     }
 }
 
+void parseSectionHeaders(std::ifstream& file) {
+    file.seekg(0, std::ios::beg);
+    EP_IMAGE_DOS_HEADER dosHeader;
+    file.read(reinterpret_cast<char*>(&dosHeader), sizeof(EP_IMAGE_DOS_HEADER));
+
+    if (dosHeader.e_magic == EP_IMAGE_DOS_SIGNATURE) {
+        file.seekg(dosHeader.e_lfanew + sizeof(uint32_t), std::ios::beg); // Move to IMAGE_NT_HEADERS
+        EP_IMAGE_FILE_HEADER fileHeader;
+        file.read(reinterpret_cast<char*>(&fileHeader), sizeof(EP_IMAGE_FILE_HEADER));
+
+        file.seekg(dosHeader.e_lfanew + sizeof(uint32_t) + sizeof(EP_IMAGE_FILE_HEADER), std::ios::beg); // Move to Optional Header
+        EP_IMAGE_OPTIONAL_HEADER optionalHeader;
+        file.read(reinterpret_cast<char*>(&optionalHeader), sizeof(EP_IMAGE_OPTIONAL_HEADER));
+
+        file.seekg(dosHeader.e_lfanew + sizeof(uint32_t) + sizeof(EP_IMAGE_FILE_HEADER) + fileHeader.SizeOfOptionalHeader, std::ios::beg); // Move to Section Headers
+        std::vector<EP_IMAGE_SECTION_HEADER> sectionHeaders(fileHeader.NumberOfSections);
+        file.read(reinterpret_cast<char*>(sectionHeaders.data()), sizeof(EP_IMAGE_SECTION_HEADER) * fileHeader.NumberOfSections);
+
+        std::cout << "\nSection Headers:" << std::endl;
+        for (const auto& sectionHeader : sectionHeaders) {
+            std::cout << "Name: " << sectionHeader.Name << std::endl;
+            std::cout << "VirtualSize: " << sectionHeader.VirtualSize << std::endl;
+            std::cout << "VirtualAddress: " << sectionHeader.VirtualAddress << std::endl;
+            std::cout << "SizeOfRawData: " << sectionHeader.SizeOfRawData << std::endl;
+            std::cout << "PointerToRawData: " << sectionHeader.PointerToRawData << std::endl;
+            std::cout << "Characteristics: " << std::hex << sectionHeader.Characteristics << std::dec << std::endl;
+            std::cout << std::endl;
+        }
+    } else {
+        std::cerr << "Invalid DOS signature." << std::endl;
+    }
+}
 
 #endif // EP_PARSE_FILE_H
