@@ -8,3 +8,35 @@ struct Node {
     
     Node(const string& name) : data(name), next(nullptr) {}
 };
+
+class LinkedList {
+public:
+    LinkedList() : head(nullptr) {}
+
+    void insert(const string& name) {
+        Node* newNode = new Node(name);
+        
+        if (head == nullptr || name < head->data) {
+            newNode->next = head;
+            head = newNode;
+        } else {
+            Node* current = head;
+            while (current->next != nullptr && name > current->next->data) {
+                current = current->next;
+            }
+            newNode->next = current->next;
+            current->next = newNode;
+        }
+    }
+        void display() {
+        Node* current = head;
+        while (current != nullptr) {
+            cout <<"name:\t"<< current->data <<endl;
+            current = current->next;
+        }
+        cout << endl;
+    }
+
+private:
+    Node* head;
+};
