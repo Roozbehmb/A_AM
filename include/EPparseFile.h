@@ -81,4 +81,26 @@ void parseDosHeader(std::ifstream& file) {
     }
 }
 
+
+void parseNtHeader(std::ifstream& file) {
+    file.seekg(0, std::ios::beg);
+    EP_IMAGE_DOS_HEADER dosHeader;
+    file.read(reinterpret_cast<char*>(&dosHeader), sizeof(EP_IMAGE_DOS_HEADER));
+
+    if (dosHeader.e_magic == EP_IMAGE_DOS_SIGNATURE) {
+        file.seekg(dosHeader.e_lfanew, std::ios::beg);
+        EP_IMAGE_NT_HEADERS ntHeader;
+        file.read(reinterpret_cast<char*>(&ntHeader), sizeof(EP_IMAGE_NT_HEADERS));
+
+        if (ntHeader.Signature == EP_IMAGE_NT_SIGNATURE) {
+            std::cout << "\nNT Header:" << std::endl;
+            std::cout << "Signature: " << std::hex << ntHeader.Signature << std::dec << std::endl;
+        } else {
+            std::cerr << "Invalid NT signature." << std::endl;
+        }
+    } else {
+        std::cerr << "Invalid DOS signature." << std::endl;
+    }
+}
+
 #endif // EP_PARSE_FILE_H
