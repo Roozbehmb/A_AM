@@ -4,6 +4,7 @@
 #include <vector>
 #include <iomanip>
 #include <cstdint>
+#include <cstdio>
 #include "listNames.h"
 #include "parser.h"
 #include "EPparseFile.h"
@@ -54,14 +55,25 @@ int menu(){
                 break;
             case 3:
                 dataFile();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.get();
                 // اجرای اقدامات مربوط به dataFile 
                 break;
             case 4:
+            if(!filePath.empty()){
                 parsePEHeaders(filePath);
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.get();
                 // اجرای اقدامات مربوط به parsePEHeaders 
+            }else{
+                break;
+            }
+
                 break;
             case 5:
                 GetLinkedList();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.get();
                 // اجرای اقدامات مربوط به GetLinkedList 
                 break;
             case 6:
@@ -69,7 +81,7 @@ int menu(){
                 // اجرای اقدامات مربوط به GetExportImport 
                 break;
             default:
-                std::cout << "Please try again!!!.\n";
+                std::cout << "**************************************************.\n";
                 // اگر انتخاب معتبر نباشد، پیام خطا نمایش داده شود
         }
 
@@ -98,5 +110,8 @@ void Get_ExportImport(){
     std::string filePath = "C:\\Windows\\System32\\mspaint.exe";
 
     ParseImportExport(filePath);
+    std::cout << "Press Enter to menu...";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
 
 }

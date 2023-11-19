@@ -195,6 +195,7 @@ int parsePEHeaders(const std::string& filePath) {
     parseOptionalHeader(file);
     parseSectionHeaders(file);
 
+
     return 0;
 }
 

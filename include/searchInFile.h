@@ -54,7 +54,7 @@ void searchInDirectory(const std::string& directoryPath, const std::string& sear
     }
 
 void sortedByName(){
-string path_name = "./amnparadaz";
+string path_name = "../";
 
   set<fs::path> sorted_by_name;
 
@@ -80,7 +80,7 @@ int search(){
         else{std::cout << "Enter the search phrase : ";}
     cin >> searchPhrase;
   //  std::getline(std::cin, searchPhrase);
-    std::string startingDirectory = "."; 
+    std::string startingDirectory = "../"; 
 
     searchInDirectory(startingDirectory, searchPhrase, List , select );
 
@@ -88,6 +88,8 @@ int search(){
 
     }
 
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
 
     return 0;
 }

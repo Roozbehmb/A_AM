@@ -5,7 +5,7 @@
 
 int dataFile(){
     int number = 0;
-    std::cout << "plese enter a number :"<<std::endl;
+    std::cout << "plese Enter a number to create an executable file to copy :"<<std::endl;
     std::cin >> number;
     wchar_t exePath[MAX_PATH];
     GetModuleFileNameW(NULL, exePath, MAX_PATH);
@@ -28,4 +28,8 @@ int dataFile(){
         return 0;
 
     }
+    
+
+
+    return 0;
 }

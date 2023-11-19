@@ -63,8 +63,9 @@ int bst_Name(){
         nameTree.insert(name);
     }
 
-    cout << "***Sorted names*** "<<endl;
     nameTree.display();
-
+    cout << "Sorted names(Press Enter to display the menu):"<<endl;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
     return 0;
 }

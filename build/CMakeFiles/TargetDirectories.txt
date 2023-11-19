@@ -1,0 +1,3 @@
+C:/Users/Roozbeh/Desktop/New folder (4)/A_AM/build/CMakeFiles/MyProject.dir
+C:/Users/Roozbeh/Desktop/New folder (4)/A_AM/build/CMakeFiles/edit_cache.dir
+C:/Users/Roozbeh/Desktop/New folder (4)/A_AM/build/CMakeFiles/rebuild_cache.dir
