@@ -76,3 +76,49 @@ void parseImportTable(std::ifstream& file, const IMAGE_IMPORT_DESCRIPTOR& import
         }
     }
 }
+
+void ParseImportExport(const std::string& filePath) {
+    std::ifstream file(filePath, std::ios::binary);
+
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << filePath << std::endl;
+        return;
+    }
+
+    IMAGE_DOS_HEADER dosHeader;
+    file.read(reinterpret_cast<char*>(&dosHeader), sizeof(IMAGE_DOS_HEADER));
+
+    if (dosHeader.e_magic != 0x5A4D) {
+        std::cerr << "Not a valid PE file." << std::endl;
+        return;
+    }
+
+    IMAGE_NT_HEADERS ntHeaders;
+    file.seekg(dosHeader.e_lfanew, std::ios::beg);
+    file.read(reinterpret_cast<char*>(&ntHeaders), sizeof(IMAGE_NT_HEADERS));
+
+    // Parse Export Table
+    IMAGE_EXPORT_DIRECTORY exportDirectory;
+    file.seekg(
+        ntHeaders.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress,
+        std::ios::beg
+    );
+    file.read(reinterpret_cast<char*>(&exportDirectory), sizeof(IMAGE_EXPORT_DIRECTORY));
+    parseExportTable(file, exportDirectory);
+
+    // Parse Import Table
+    IMAGE_IMPORT_DESCRIPTOR importDescriptor;
+    file.seekg(
+        ntHeaders.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress,
+        std::ios::beg
+    );
+    while (true) {
+        file.read(reinterpret_cast<char*>(&importDescriptor), sizeof(IMAGE_IMPORT_DESCRIPTOR));
+        if (importDescriptor.Name == 0) {
+            break;
+        }
+        parseImportTable(file, importDescriptor);
+    }
+
+    file.close();
+}
