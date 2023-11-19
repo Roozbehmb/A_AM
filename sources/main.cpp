@@ -24,7 +24,7 @@ int main(){
 
 int menu(){
         int choice ;
-        std::string filePath = "C:\\Users\\Roozbeh\\Desktop\\rx.exe";
+        std::string filePath = "C:\\Users\\Roozbeh\\Desktop\\rx.exe"; ///test
 
     do {
         // نمایش منو
