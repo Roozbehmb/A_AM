@@ -1,0 +1,12 @@
+#include <windows.h>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <iomanip>
+#include <cstdint>
+#include "listNames.h"
+#include "parser.h"
+#include "EPparseFile.h"
+#include "copyingFile.h"
+#include "searchInFile.h"
+#include "bst-File.h"
