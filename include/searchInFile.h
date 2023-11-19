@@ -23,3 +23,45 @@ void searchInFile(const std::string& filePath, const std::string& searchPhrase) 
         file.close();
     }
 }
+
+void searchInDirectory(const std::string& directoryPath, const std::string& searchPhrase,vector<string> &list_new ,int select ) {
+    int i=0;
+    for (const auto& entry : std::filesystem::directory_iterator(directoryPath)) {
+        
+        if (entry.is_directory()) {
+            searchInDirectory(entry.path().string(), searchPhrase,list_new , select); /// تبدیل به رشته
+        } else if (entry.is_regular_file()) {
+            
+            if(select == 1){
+                if(entry.path().filename().string().find(searchPhrase) != std::string::npos){
+                    string  list= entry.path().filename().string();
+                    list_new.push_back(list);
+                }
+            }else{
+                    searchInFile(entry.path().string(), searchPhrase); // تبدیل به رشته
+            }
+
+            }
+        
+        }
+    }
+
+    void display(vector<string> list){
+    int arrSize = list.size();
+    for(int i = 0; i < arrSize; i++) {
+    cout << " Match found text in the file = \t" << list[i] << endl;
+}
+    }
+
+void sortedByName(){
+string path_name = "./amnparadaz";
+
+  set<fs::path> sorted_by_name;
+
+  for (auto &entry : fs::directory_iterator(path_name))
+    sorted_by_name.insert(entry.path());
+
+  for (auto &filename : sorted_by_name){
+    cout << filename.string() << endl;
+  }
+}    
