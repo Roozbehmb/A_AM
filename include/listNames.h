@@ -40,3 +40,23 @@ public:
 private:
     Node* head;
 };
+int GetLinkedList() {
+    LinkedList nameList;
+
+    while (true) {
+        cout << "Enter a name (or type '.' to finish): ";
+        string name;
+        cin >> name;
+
+        if (name == ".") {
+            break;
+        }
+
+        nameList.insert(name);
+    }
+
+    cout << "*****Sorted names**** "<<endl;
+    nameList.display();
+
+    return 0;
+}
