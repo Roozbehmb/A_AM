@@ -64,4 +64,30 @@ string path_name = "./amnparadaz";
   for (auto &filename : sorted_by_name){
     cout << filename.string() << endl;
   }
-}    
+}
+
+int search(){
+    vector<string> List;
+    int select = 0;
+    std::string searchPhrase;
+
+    cout << "1)Search by file name  "<<endl;
+    cout << "2)Search for text in the file "<<endl;
+    cin >> select;
+    
+    if(select > 0 and select <= 2){
+        if(select==2){std::cout << "Enter a text to search in a file : ";}
+        else{std::cout << "Enter the search phrase : ";}
+    cin >> searchPhrase;
+  //  std::getline(std::cin, searchPhrase);
+    std::string startingDirectory = "."; 
+
+    searchInDirectory(startingDirectory, searchPhrase, List , select );
+
+    display(List);
+
+    }
+
+
+    return 0;
+}
