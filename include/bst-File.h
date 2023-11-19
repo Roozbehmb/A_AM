@@ -47,3 +47,24 @@ private:
         }
     }
 };
+
+int bst_Name(){
+    BinarySearchTree nameTree;
+
+    while (true) {
+        cout << "Enter a name or type '.' to finish: ";
+        string name;
+        cin >> name;
+
+        if (name == ".") {
+            break;
+        }
+
+        nameTree.insert(name);
+    }
+
+    cout << "***Sorted names*** "<<endl;
+    nameTree.display();
+
+    return 0;
+}
