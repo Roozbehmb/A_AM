@@ -95,17 +95,6 @@ void Get_ExportImport(){
 
     LinkedList nameList;
 
-    // while (true) {
-    //     cout << "Please enter a name or number to create the file (or type '.' to finish): ";
-    //     string name;
-    //     cin >> name;
-
-    //     if (name == ".") {
-    //         break;
-    //     }
-
-    //     nameList.insert(name);
-    // }
 
     std::string filePath = "C:\\Windows\\System32\\mspaint.exe";
 
